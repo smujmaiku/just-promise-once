@@ -1,6 +1,6 @@
 {
   "name": "just-promise-once",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Use once listener as a promise",
   "main": "lib/just-promise-once.js",
   "types": "lib/just-promise-once.d.ts",

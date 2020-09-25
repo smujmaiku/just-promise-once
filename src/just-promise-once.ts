@@ -16,14 +16,19 @@ import justDefer from 'just-defer';
 async function justPromiseOnce(target: any, type: string, timeout: number | undefined = undefined): Promise<any[]> {
 	const { resolve, reject, promise } = justDefer();
 
-	target.once(type, (...data: any[]) => resolve(data));
+	const handleEvent = (...data: any[]) => resolve(data);
+	target.once(type, handleEvent);
 
 	let timer;
 	if (timeout !== undefined) {
-		timer = setTimeout(() => reject(), timeout);
+		timer = setTimeout(() => {
+			target.off(type, handleEvent);
+			reject();
+		}, timeout);
 	}
 
 	const result = await promise;
+	target.off(type, handleEvent);
 
 	if (timer) {
 		clearTimeout(timer);
